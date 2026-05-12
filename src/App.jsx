@@ -1,7 +1,9 @@
 import React from "react";
+import { useForm, ValidationError } from "@formspree/react";
 
 export default function PortfolioSite() {
   const [showModal, setShowModal] = React.useState(false);
+  const [state, handleFormspreeSubmit] = useForm("xzdowdrb");
 
   const projects = [
     {
@@ -315,34 +317,24 @@ export default function PortfolioSite() {
               <div className="lg:col-span-2 bg-white text-black rounded-[2rem] p-8 shadow-2xl">
                 <form
                   className="space-y-5"
-                  name="audit-request"
-                  method="POST"
-                  data-netlify="true"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.target);
-                    fetch("https://formspree.io/f/xzdowdrb", {
-                      method: "POST",
-                      body: formData,
-                      headers: { Accept: "application/json" },
-                    })
-                      .then((res) => {
-                        if (res.ok) setShowModal(true);
-                        else alert("Something went wrong. Please try again.");
-                      })
-                      .catch(() => alert("Something went wrong. Please try again."));
+                  onSubmit={async (e) => {
+                    await handleFormspreeSubmit(e);
+                    if (!state.errors || state.errors.length === 0) {
+                      setShowModal(true);
+                    }
                   }}
                 >
-                  <input type="hidden" name="form-name" value="audit-request" />
                   <input className="w-full border rounded-2xl px-5 py-4" placeholder="Business Name" name="business-name" />
                   <input className="w-full border rounded-2xl px-5 py-4" placeholder="Website URL" name="website-url" />
                   <div className="grid md:grid-cols-2 gap-4">
                     <input className="w-full border rounded-2xl px-5 py-4" placeholder="Your Name" name="name" />
                     <input className="w-full border rounded-2xl px-5 py-4" placeholder="Your Email" name="email" />
                   </div>
+                  <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-500 text-sm" />
                   <textarea className="w-full border rounded-2xl px-5 py-4 min-h-[140px]" placeholder="Tell us about your website goals, frustrations, or features you would like added." name="message" />
-                  <button type="submit" className="w-full py-4 rounded-2xl bg-black text-white font-semibold hover:opacity-90 transition">
-                    Submit Audit Request
+                  <ValidationError prefix="Message" field="message" errors={state.errors} className="text-red-500 text-sm" />
+                  <button type="submit" disabled={state.submitting} className="w-full py-4 rounded-2xl bg-black text-white font-semibold hover:opacity-90 transition disabled:opacity-50">
+                    {state.submitting ? "Sending..." : "Submit Audit Request"}
                   </button>
                 </form>
               </div>
