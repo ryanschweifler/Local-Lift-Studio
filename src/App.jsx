@@ -321,12 +321,15 @@ export default function PortfolioSite() {
                   onSubmit={(e) => {
                     e.preventDefault();
                     const formData = new FormData(e.target);
-                    fetch("/", {
+                    fetch("https://formspree.io/f/xzdowdrb", {
                       method: "POST",
-                      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                      body: new URLSearchParams(formData).toString(),
+                      body: formData,
+                      headers: { Accept: "application/json" },
                     })
-                      .then(() => setShowModal(true))
+                      .then((res) => {
+                        if (res.ok) setShowModal(true);
+                        else alert("Something went wrong. Please try again.");
+                      })
                       .catch(() => alert("Something went wrong. Please try again."));
                   }}
                 >
