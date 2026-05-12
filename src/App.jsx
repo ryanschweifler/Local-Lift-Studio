@@ -401,32 +401,45 @@ export default function PortfolioSite() {
             <div className="lg:col-span-2 bg-white text-black rounded-[2rem] p-8 shadow-2xl">
               <form
                 className="space-y-5"
+                name="audit-request"
+                method="POST"
+                data-netlify="true"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  alert(
-                    "Audit request submitted successfully. Call or text 650-405-5171 to follow up directly."
-                  );
+                  const formData = new FormData(e.target);
+                  fetch("/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(formData).toString(),
+                  })
+                    .then(() => alert("Audit request submitted! We will be in touch soon."))
+                    .catch(() => alert("Something went wrong. Please try again."));
                 }}
               >
+                <input type="hidden" name="form-name" value="audit-request" />
                 <input
                   className="w-full border rounded-2xl px-5 py-4"
                   placeholder="Business Name"
+                  name="business-name"
                 />
 
                 <input
                   className="w-full border rounded-2xl px-5 py-4"
                   placeholder="Website URL"
+                  name="website-url"
                 />
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <input
                     className="w-full border rounded-2xl px-5 py-4"
                     placeholder="Your Name"
+                    name="name"
                   />
 
                   <input
                     className="w-full border rounded-2xl px-5 py-4"
                     placeholder="Your Email"
+                    name="email"
                   />
                 </div>
 
