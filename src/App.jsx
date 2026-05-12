@@ -1,4 +1,5 @@
 export default function PortfolioSite() {
+  const [showModal, setShowModal] = React.useState(false);
   const projects = [
     {
       title: "Contractor & Remodeling Websites",
@@ -132,8 +133,25 @@ export default function PortfolioSite() {
     }
   };
 
+
+  const Modal = () => (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+      <div className="bg-white text-black rounded-2xl p-10 max-w-md w-full mx-4 shadow-2xl text-center">
+        <div className="text-4xl mb-4">✓</div>
+        <h2 className="text-2xl font-bold mb-3">Request Received</h2>
+        <p className="text-gray-600 mb-6">Thanks for reaching out! We'll review your website and get back to you within 24 hours.</p>
+        <button
+          onClick={() => setShowModal(false)}
+          className="bg-black text-white px-8 py-3 rounded-xl font-semibold hover:opacity-80 transition"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <>{showModal && <Modal />}<div className="min-h-screen bg-white text-gray-900">
       <nav className="sticky top-0 z-50 border-b bg-white/90 backdrop-blur px-6 py-4 md:px-16">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="font-bold text-xl">LocalLift Studio</div>
@@ -412,7 +430,7 @@ export default function PortfolioSite() {
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: new URLSearchParams(formData).toString(),
                   })
-                    .then(() => alert("Audit request submitted! We will be in touch soon."))
+                    .then(() => setShowModal(true))
                     .catch(() => alert("Something went wrong. Please try again."));
                 }}
               >
@@ -559,5 +577,6 @@ export default function PortfolioSite() {
         </div>
       </footer>
     </div>
+  </>
   );
 }
