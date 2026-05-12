@@ -1,4 +1,5 @@
 export default function PortfolioSite() {
+  const [showModal, setShowModal] = React.useState(false);
   const projects = [
     {
       title: "Contractor & Remodeling Websites",
@@ -132,8 +133,248 @@ export default function PortfolioSite() {
     }
   };
 
+
+  const SuccessModal = () => (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+      <div className="bg-white text-black rounded-3xl p-10 max-w-md w-full mx-4 shadow-2xl text-center">
+        <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 className="text-2xl font-bold mb-3">Request Received!</h2>
+        <p className="text-gray-500 mb-2">Thanks for reaching out to LocalLift Studio.</p>
+        <p className="text-gray-500 mb-8">We will review your website and get back to you within <span className="font-semibold text-black">24 hours</span>.</p>
+        <div className="flex flex-col gap-3">
+          <button onClick={() => setShowModal(false)} className="bg-black text-white px-8 py-3 rounded-xl font-semibold hover:opacity-80 transition">
+            Got it
+          </button>
+          <a href="tel:6504055171" className="border border-black text-black px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition">
+            Call us: 650-405-5171
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+
+  const ProcessSection = () => (
+    <section className="px-6 py-20 bg-white">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-14">
+          <div className="inline-block px-4 py-2 rounded-full bg-gray-100 text-sm mb-6">How It Works</div>
+          <h2 className="text-4xl font-bold mb-4">Our Process</h2>
+          <p className="text-gray-500 text-lg">From first contact to launch in as little as one week.</p>
+        </div>
+        <div className="grid md:grid-cols-4 gap-8">
+          {[
+            { step: "01", title: "Free Audit", desc: "We analyze your current site and identify exactly what is holding you back from more calls and bookings." },
+            { step: "02", title: "Strategy Call", desc: "A quick 20-minute call where we walk through findings and map out what your new site needs." },
+            { step: "03", title: "Design & Build", desc: "We design and build your site using modern mobile-first technology. You review and approve before launch." },
+            { step: "04", title: "Launch & Handoff", desc: "We launch your site, set up analytics, and hand over full ownership. You are live and ready for leads." },
+          ].map((item, i) => (
+            <div key={i} className="relative">
+              <div className="text-6xl font-black text-gray-100 mb-4">{item.step}</div>
+              <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+
+  const PricingSection = () => (
+    <section className="px-6 py-20 bg-gray-50">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-14">
+          <div className="inline-block px-4 py-2 rounded-full bg-gray-100 text-sm mb-6">Pricing</div>
+          <h2 className="text-4xl font-bold mb-4">Transparent Pricing</h2>
+          <p className="text-gray-500 text-lg max-w-xl mx-auto">Professional websites at a fraction of agency prices. No hidden fees, no monthly retainers unless you want them.</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            {
+              name: "Starter",
+              price: "$599",
+              marketRate: "$1,500",
+              desc: "Perfect for getting online fast with a clean, professional presence.",
+              features: ["3-page custom website", "Mobile-first design", "Contact form", "Basic SEO", "Google Analytics setup", "1 round of revisions"],
+              highlight: false,
+            },
+            {
+              name: "Growth",
+              price: "$999",
+              marketRate: "$2,500",
+              desc: "For businesses ready to generate leads and stand out from competitors.",
+              features: ["5-page custom website", "Everything in Starter", "Advanced SEO", "Speed optimization", "Lead capture form", "3 rounds of revisions"],
+              highlight: true,
+            },
+            {
+              name: "Premium",
+              price: "$1,799",
+              marketRate: "$4,500",
+              desc: "A fully custom site built to convert visitors into paying customers.",
+              features: ["10-page custom website", "Everything in Growth", "Custom animations", "Booking integration", "Priority turnaround", "Unlimited revisions"],
+              highlight: false,
+            },
+          ].map((plan, i) => (
+            <div key={i} className={`rounded-3xl p-8 ${plan.highlight ? "bg-black text-white" : "bg-white text-black border border-gray-100"}`}>
+              <div className="mb-6">
+                <p className={`text-sm font-medium mb-2 ${plan.highlight ? "text-gray-400" : "text-gray-500"}`}>{plan.name}</p>
+                <div className="flex items-end gap-2 mb-1">
+                  <span className="text-4xl font-black">{plan.price}</span>
+                </div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className={`text-sm line-through ${plan.highlight ? "text-gray-500" : "text-gray-400"}`}>{plan.marketRate} elsewhere</span>
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${plan.highlight ? "bg-white text-black" : "bg-black text-white"}`}>You save {plan.name === "Starter" ? "60%" : plan.name === "Growth" ? "60%" : "60%"}</span>
+                </div>
+                <p className={`text-sm ${plan.highlight ? "text-gray-400" : "text-gray-500"}`}>{plan.desc}</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {plan.features.map((f, j) => (
+                  <li key={j} className="flex items-center gap-3 text-sm">
+                    <svg className={`w-4 h-4 flex-shrink-0 ${plan.highlight ? "text-white" : "text-black"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => document.getElementById("audit-form-page").scrollIntoView({ behavior: "smooth" })}
+                className={`w-full py-3 rounded-xl font-semibold transition ${plan.highlight ? "bg-white text-black hover:bg-gray-100" : "bg-black text-white hover:opacity-80"}`}
+              >
+                Get Started
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+
+
+  const SuccessModal = () => (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+      <div className="bg-white text-black rounded-3xl p-10 max-w-md w-full mx-4 shadow-2xl text-center">
+        <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 className="text-2xl font-bold mb-3">Request Received!</h2>
+        <p className="text-gray-500 mb-2">Thanks for reaching out to LocalLift Studio.</p>
+        <p className="text-gray-500 mb-8">We will review your website and get back to you within <span className="font-semibold text-black">24 hours</span>.</p>
+        <div className="flex flex-col gap-3">
+          <button onClick={() => setShowModal(false)} className="bg-black text-white px-8 py-3 rounded-xl font-semibold hover:opacity-80 transition">
+            Got it
+          </button>
+          <a href="tel:6504055171" className="border border-black text-black px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition">
+            Call us: 650-405-5171
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+
+  const ProcessSection = () => (
+    <section className="px-6 py-20 bg-white">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-14">
+          <div className="inline-block px-4 py-2 rounded-full bg-gray-100 text-sm mb-6">How It Works</div>
+          <h2 className="text-4xl font-bold mb-4">Our Process</h2>
+          <p className="text-gray-500 text-lg">From first contact to launch in as little as one week.</p>
+        </div>
+        <div className="grid md:grid-cols-4 gap-8">
+          {[
+            { step: "01", title: "Free Audit", desc: "We analyze your current site and identify exactly what is holding you back from more calls and bookings." },
+            { step: "02", title: "Strategy Call", desc: "A quick 20-minute call where we walk through findings and map out what your new site needs." },
+            { step: "03", title: "Design & Build", desc: "We design and build your site using modern mobile-first technology. You review and approve before launch." },
+            { step: "04", title: "Launch & Handoff", desc: "We launch your site, set up analytics, and hand over full ownership. You are live and ready for leads." },
+          ].map((item, i) => (
+            <div key={i} className="relative">
+              <div className="text-6xl font-black text-gray-100 mb-4">{item.step}</div>
+              <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+
+  const PricingSection = () => (
+    <section className="px-6 py-20 bg-gray-50">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-14">
+          <div className="inline-block px-4 py-2 rounded-full bg-gray-100 text-sm mb-6">Pricing</div>
+          <h2 className="text-4xl font-bold mb-4">Transparent Pricing</h2>
+          <p className="text-gray-500 text-lg max-w-xl mx-auto">Professional websites at a fraction of agency prices. No hidden fees, no monthly retainers unless you want them.</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            {
+              name: "Starter",
+              price: "$599",
+              marketRate: "$1,500",
+              desc: "Perfect for getting online fast with a clean, professional presence.",
+              features: ["3-page custom website", "Mobile-first design", "Contact form", "Basic SEO", "Google Analytics setup", "1 round of revisions"],
+              highlight: false,
+            },
+            {
+              name: "Growth",
+              price: "$999",
+              marketRate: "$2,500",
+              desc: "For businesses ready to generate leads and stand out from competitors.",
+              features: ["5-page custom website", "Everything in Starter", "Advanced SEO", "Speed optimization", "Lead capture form", "3 rounds of revisions"],
+              highlight: true,
+            },
+            {
+              name: "Premium",
+              price: "$1,799",
+              marketRate: "$4,500",
+              desc: "A fully custom site built to convert visitors into paying customers.",
+              features: ["10-page custom website", "Everything in Growth", "Custom animations", "Booking integration", "Priority turnaround", "Unlimited revisions"],
+              highlight: false,
+            },
+          ].map((plan, i) => (
+            <div key={i} className={`rounded-3xl p-8 ${plan.highlight ? "bg-black text-white" : "bg-white text-black border border-gray-100"}`}>
+              <div className="mb-6">
+                <p className={`text-sm font-medium mb-2 ${plan.highlight ? "text-gray-400" : "text-gray-500"}`}>{plan.name}</p>
+                <div className="flex items-end gap-2 mb-1">
+                  <span className="text-4xl font-black">{plan.price}</span>
+                </div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className={`text-sm line-through ${plan.highlight ? "text-gray-500" : "text-gray-400"}`}>{plan.marketRate} elsewhere</span>
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${plan.highlight ? "bg-white text-black" : "bg-black text-white"}`}>You save {plan.name === "Starter" ? "60%" : plan.name === "Growth" ? "60%" : "60%"}</span>
+                </div>
+                <p className={`text-sm ${plan.highlight ? "text-gray-400" : "text-gray-500"}`}>{plan.desc}</p>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {plan.features.map((f, j) => (
+                  <li key={j} className="flex items-center gap-3 text-sm">
+                    <svg className={`w-4 h-4 flex-shrink-0 ${plan.highlight ? "text-white" : "text-black"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => document.getElementById("audit-form-page").scrollIntoView({ behavior: "smooth" })}
+                className={`w-full py-3 rounded-xl font-semibold transition ${plan.highlight ? "bg-white text-black hover:bg-gray-100" : "bg-black text-white hover:opacity-80"}`}
+              >
+                Get Started
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <>{showModal && <SuccessModal />}<div className="min-h-screen bg-white text-gray-900">
       <nav className="sticky top-0 z-50 border-b bg-white/90 backdrop-blur px-6 py-4 md:px-16">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="font-bold text-xl">LocalLift Studio</div>
@@ -412,7 +653,7 @@ export default function PortfolioSite() {
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: new URLSearchParams(formData).toString(),
                   })
-                    .then(() => alert("Audit request submitted! We will be in touch soon."))
+                    .then(() => setShowModal(true))
                     .catch(() => alert("Something went wrong. Please try again."));
                 }}
               >
@@ -559,5 +800,7 @@ export default function PortfolioSite() {
         </div>
       </footer>
     </div>
+  </>
+  </>
   );
 }
